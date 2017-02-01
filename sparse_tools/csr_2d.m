@@ -6,8 +6,8 @@ clear all
 clc
 
 % Set grid geo
-m = 10;
-n = 10; 
+m = 100;
+n = 100; 
 
 % Determine Number of Variables
 i_nodes = (m-2)*(n-2);
@@ -43,12 +43,12 @@ T = zeros(m,n);
 A = zeros(m*n,m*n);
 
 % Create coefficients (interior)
-aw_i = 1;
-ae_i = 1;
-as_i = 1;
-an_i = 1;
-ap_i = 1;
-Su_i = 1;
+aw_i = .1;
+ae_i = .1;
+as_i = .1;
+an_i = .1;
+Su_i = 0;
+ap_i = aw_i*4+Su_i;
 
 % i = 1 sweep (top row)
 i = 1;
@@ -180,11 +180,7 @@ for j = 1:1:n
     
 end 
 
-% Plot Graph
-%contour(A,1)
-
 % Create CSR
-
 count = 1;
 count2 = 1;
 first_check = 1;
@@ -218,12 +214,31 @@ end
 d = zeros(1,n*m);
 
 % Create random d matrix
-for z = 1:1:n*m
-    d(z) = rand;
+%for z = 1:1:n*m
+%    d(z) = 3;
+%end
+
+for z = 1:1:m
+    d(z) = 1;
+end
+
+for z = m*n:-1:m*n-m
+    d(z) = 1;
 end
 
 % Create Solution File
 x = d/A;
+itr = 0;
+
+% Plot T field
+for i = 1:1:m
+    for j = 1:1:n
+        T(i,j) = x((i-1)*m+j);
+    end
+end
+
+contourf(T,10)
+grid minor
 
 % Write CSV to File
 display('Writing to file')
