@@ -1,13 +1,17 @@
+% CSR Matrix Creator for 2D Heat Transfer Problems
+% Matt Blomquist - Jan 30, 2017
+
 close all
 clear all
 clc
 
-% Set the size of the geometric grid
-N = 3;
+% Set grid geo
+m = 10;
+n = 10; 
 
 % Determine Number of Variables
-i_nodes = (N-2)^2;
-s_nodes = 4*(N-2);
+i_nodes = (m-2)*(n-2);
+s_nodes = 4*((n-2)+(m-2));
 c_nodes = 4;
 
 % Calculate Total A matrix Variables
@@ -17,17 +21,13 @@ c_vars = c_nodes*3;
 
 t_vars = i_vars+s_vars+c_vars;
 
-n_perc = t_vars/(N^2)^2;
+n_perc = t_vars/((m*n)^2);
 
 line1_text = 'Total number of A matrix (2D) vars for %3.0f is : %3.0f.\n';
 line2_text = 'Sparsity is: %0.5f\n';
 
-fprintf(line1_text,N,t_vars)
+fprintf(line1_text,(m*n)^2,t_vars)
 fprintf(line2_text,n_perc)
-
-% Set grid geo
-m = 3;
-n = 3; 
 
 % Set BC
 bcw = 1;
@@ -43,10 +43,10 @@ T = zeros(m,n);
 A = zeros(m*n,m*n);
 
 % Create coefficients (interior)
-aw_i = -1;
-ae_i = -1;
-as_i = -1;
-an_i = -1;
+aw_i = 1;
+ae_i = 1;
+as_i = 1;
+an_i = 1;
 ap_i = 1;
 Su_i = 1;
 
@@ -181,7 +181,7 @@ for j = 1:1:n
 end 
 
 % Plot Graph
-contour(A,1)
+%contour(A,1)
 
 % Create CSR
 
@@ -226,4 +226,31 @@ end
 x = d/A;
 
 % Write CSV to File
-        
+display('Writing to file')
+
+formatSpec = '%4.8f\n';
+fileID = fopen('csr_200_val.txt','w');
+fprintf(fileID,formatSpec,val);
+fclose(fileID);
+
+formatSpec = '%8.0f\n';
+fileID = fopen('csr_200_col.txt','w');
+fprintf(fileID,formatSpec,col);
+fclose(fileID);
+
+formatSpec = '%8.0f\n';
+fileID = fopen('csr_200_row.txt','w');
+fprintf(fileID,formatSpec,row);
+fclose(fileID);
+
+formatSpec = '%4.8f\n';
+fileID = fopen('csr_200_x.txt','w');
+fprintf(fileID,formatSpec,x);
+fclose(fileID);
+
+formatSpec = '%4.8f\n';
+fileID = fopen('csr_200_d.txt','w');
+fprintf(fileID,formatSpec,d);
+fclose(fileID);
+
+display('All done')
