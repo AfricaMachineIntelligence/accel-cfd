@@ -1,148 +1,942 @@
+% CSR Matrix Creator for 3D Heat Transfer Problems
+% Matt Blomquist - Jan 30, 2017
+
 close all
 clear all
 clc
 
-% Set the size of the geometric grid
-N = 4;
+% Set 3D Grid Geometry
+m = 10;
+n = 10;
+l = 10;
 
-% DetermiNe Number of Nodes
-i_Nodes = (N-2)^3;
-l_Nodes = (N-2)*12;
-c_Nodes = 8;
-s_Nodes = (N-2)^2*6;
+% Determine Number of Nodes
+i_nodes = (m-2)*(n-2)*(l-2);
+l_nodes = 4*((m-2)+(n-2)+(l-2));
+s_nodes = 2*((m-2)*(n-2)+(n-2)*(l-2)+(l-2)*(m-2));
+c_nodes = 8;
 
 % Calculate Total A matrix Variables
-i_vars = i_Nodes*7;
-l_vars = l_Nodes*5;
-s_vars = s_Nodes*6;
-c_vars = c_Nodes*4;
+i_vars = i_nodes*7;
+s_vars = s_nodes*6;
+l_vars = l_nodes*5;
+c_vars = c_nodes*4;
 
 t_vars = i_vars+l_vars+s_vars+c_vars;
 
-N_perc = t_vars/(N^3)^2;
+n_perc = t_vars/((m*n*l)^2);
 
-line1_text = 'Total Number of A matrix (3D) vars for %3.0f is : %3.0f.\n';
-line2_text = 'Sparsity perceNtage is: %0.10f\n';
+line1_text = 'Total number of A matrix (2D) vars for %3.0f is : %3.0f.\n';
+line2_text = 'Sparsity is: %0.5f\n';
 
-fprintf(line1_text,N,t_vars)
-fprintf(line2_text,N_perc)
+fprintf(line1_text,(m*n*l)^2,t_vars)
+fprintf(line2_text,n_perc)
 
-% Make CSR Arrays
-v = zeros(1,t_vars);
-c = zeros(1,t_vars);
-r = zeros(1,N^3+1);
+% Set BC
+bcw = 1;
+bce = 0;
+bcn = 0;
+bcs = 0;
 
-z = -1*rand;
+% Create coefficients (interior)
+aw_i = .1;
+ae_i = .1;
+as_i = .1;
+an_i = .1;
+at_i = .1;
+ab_i = .1;
+Su_i = 0;
+ap_i = aw_i*6+Su_i;
 
-v = v+z;
+% Initialize CSR Arrays
+val = zeros(1,t_vars);
+col = zeros(1,t_vars);
+row = zeros(1,m*n*l);
 
-i=1;
-j=1;
-k=1;
+% Initialize Counters
+idv = 1;
+idr = 1;
 
-a_c = 4;
-a_l = 5;
-a_s = 6;
-a_i = 7;
+% Start Depth Loop
+for k = 1:1:l
 
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
-% *?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?*?
+    % Start k = 1 loop
+    if k == 1
+        
+        % Start Row Sweep
+        for i = 1:1:m
 
-% k = 1
-stp = 1;
-v(stp) = 1;
+            % North Row Sweep
+            if i == 1
 
-for i = 1:1:N-1
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    ids = (k-1)*m*n+(i)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idp;
+                        idr = idr+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idw;
+                        idr = idr+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idw;
+                        idr = idr+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    end
+                end
+
+            % South Row Sweep
+            elseif i == m
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+
+                    if j == 1
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    end
+                end
+
+            % Top to Bottom Sweep
+            else
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+                    ids = (k-1)*m*n+(i)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idn;
+                        idr = idr+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    end
+                end
+
+            end
+
+        end
     
-    stp = stp + a_l;
-    v(stp) = 1;
-    
+    % Start k = l loop
+    elseif k == l
+        
+        % Start Row Sweep
+        for i = 1:1:m
+
+            % North Row Sweep
+            if i == 1
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    ids = (k-1)*m*n+(i)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+                        
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    end
+                end
+
+            % South Row Sweep
+            elseif i == m
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+
+                    end
+                end
+
+            % Top to Bottom Sweep
+            else
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+                    ids = (k-1)*m*n+(i)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+
+                    end
+                end
+
+            end
+
+        end
+        
+    % Start k 2:1:l-1 loop
+    else
+        
+        % Start Row Sweep
+        for i = 1:1:m
+
+            % North Row Sweep
+            if i == 1
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    ids = (k-1)*m*n+(i)*m+j;
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    end
+                end
+
+            % South Row Sweep
+            elseif i == m
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+
+                    end
+                end
+
+            % Top to Bottom Sweep
+            else
+
+                % West to East Sweep
+                for j = 1:1:n
+
+                    idp = (k-1)*m*n+(i-1)*m+j;
+                    idw = idp-1;
+                    ide = idp+1;
+                    idn = (k-1)*m*n+(i-2)*m+j;
+                    ids = (k-1)*m*n+(i)*m+j;
+                    idt = (k-2)*m*n+(i-1)*m+j;
+                    idb = (k)*m*n+(i-1)*m+j;
+
+                    if j == 1
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    elseif j == n
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    else
+
+                        row(idr) = idt;
+                        idr = idr+1;
+
+                        val(idv) = -at_i;
+                        col(idv) = idt;
+                        idv = idv+1;
+
+                        val(idv) = -an_i;
+                        col(idv) = idn;
+                        idv = idv+1;
+
+                        val(idv) = -aw_i;
+                        col(idv) = idw;
+                        idv = idv+1;
+
+                        val(idv) = ap_i;
+                        col(idv) = idp;
+                        idv = idv+1;
+
+                        val(idv) = -ae_i;
+                        col(idv) = ide;
+                        idv = idv+1;
+
+                        val(idv) = -as_i;
+                        col(idv) = ids;
+                        idv = idv+1;
+                        
+                        val(idv) = -ab_i;
+                        col(idv) = idb;
+                        idv = idv+1;
+
+                    end
+                end
+
+            end
+
+        end
+    end
 end
 
-stp = stp + a_c;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_s;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_c;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_l;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_c - 1;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_s;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_l;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_i;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_l;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_s;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_c - 1;
-v(stp) = 1;
-
-
-for i = 1:1:N-1
-    
-    stp = stp + a_l;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_c;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_s;
-    v(stp) = 1;
-    
-end
-
-stp = stp + a_c;
-v(stp) = 1;
-
-for i = 1:1:N-1
-    
-    stp = stp + a_l;
-    v(stp) = 1;
-    
-end
-
-test = find(v == 1);
-test'
+% % Write CSV to File
+% display('Writing to file')
+% 
+% formatSpec = '%4.8f\n';
+% fileID = fopen('csr_200_val.txt','w');
+% fprintf(fileID,formatSpec,val);
+% fclose(fileID);
+% 
+% formatSpec = '%8.0f\n';
+% fileID = fopen('csr_200_col.txt','w');
+% fprintf(fileID,formatSpec,col);
+% fclose(fileID);
+% 
+% formatSpec = '%8.0f\n';
+% fileID = fopen('csr_200_row.txt','w');
+% fprintf(fileID,formatSpec,row);
+% fclose(fileID);
+% 
+% formatSpec = '%4.8f\n';
+% fileID = fopen('csr_200_x.txt','w');
+% fprintf(fileID,formatSpec,x);
+% fclose(fileID);
+% 
+% formatSpec = '%4.8f\n';
+% fileID = fopen('csr_200_d.txt','w');
+% fprintf(fileID,formatSpec,d);
+% fclose(fileID);
+% 
+% display('All done')
