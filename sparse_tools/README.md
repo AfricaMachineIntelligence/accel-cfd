@@ -4,6 +4,11 @@
 
 The 2D CSR Generator creates a set of output files for the 3-Array, Compressed Sparse Row format matrix. 
 
+### TODO
+- [ ] Validate output CSR.
+- [ ] Add quick solver and T-map plot.
+- [ ] Add BC integration into coefficients.
+
 ## 3D CSR Generator
 
 The 3D CSR Generator creates a set of output files for the 3-Array, Compressed Sparse Row format matrix. 
