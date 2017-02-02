@@ -6,8 +6,8 @@ clear all
 clc
 
 % Set grid geo
-m = 1000;
-n = 1000; 
+m = 20;
+n = 10; 
 
 % Determine Number of Variables
 i_nodes = (m-2)*(n-2);
@@ -269,8 +269,8 @@ for i = 1:1:m
                 col(idv) = ide;
                 idv = idv+1;
                 
-                val(idv) = -ae_i;
-                col(idv) = ide;
+                val(idv) = -as_i;
+                col(idv) = ids;
                 idv = idv+1;
                 
             end
