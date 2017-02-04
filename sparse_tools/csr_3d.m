@@ -6,9 +6,9 @@ clear all
 clc
 
 % Set 3D Grid Geometry
-m = 10;
-n = 10;
-l = 10;
+m = 100;
+n = 100;
+l = 100;
 
 % Determine Number of Nodes
 i_nodes = (m-2)*(n-2)*(l-2);
@@ -26,7 +26,7 @@ t_vars = i_vars+l_vars+s_vars+c_vars;
 
 n_perc = t_vars/((m*n*l)^2);
 
-line1_text = 'Total number of A matrix (2D) vars for %3.0f is : %3.0f.\n';
+line1_text = 'Total number of A matrix (3D) vars for %3.0f is : %3.0f.\n';
 line2_text = 'Sparsity is: %0.5f\n';
 
 fprintf(line1_text,(m*n*l)^2,t_vars)
@@ -315,8 +315,8 @@ for k = 1:1:l
                         col(idv) = ide;
                         idv = idv+1;
 
-                        val(idv) = -ae_i;
-                        col(idv) = ide;
+                        val(idv) = -as_i;
+                        col(idv) = ids;
                         idv = idv+1;
                         
                         val(idv) = -ab_i;
@@ -911,31 +911,42 @@ for k = 1:1:l
     end
 end
 
+% Generate Solution Array
+
+d = zeros(1,m*n*l);
+
+for z = 1:1:m*n*l
+    d(z) = rand;
+end
+
 % % Write CSV to File
 % display('Writing to file')
 % 
+% format_title = 'csr_%dx%dx%d_val.txt';
+% title = sprintf(format_title,m,n,l);
 % formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_val.txt','w');
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,val);
 % fclose(fileID);
 % 
-% formatSpec = '%8.0f\n';
-% fileID = fopen('csr_200_col.txt','w');
+% format_title = 'csr_%dx%dx%d_col.txt';
+% title = sprintf(format_title,m,n,l);
+% formatSpec = '%d\n';
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,col);
 % fclose(fileID);
 % 
-% formatSpec = '%8.0f\n';
-% fileID = fopen('csr_200_row.txt','w');
+% format_title = 'csr_%dx%dx%d_row.txt';
+% title = sprintf(format_title,m,n,l);
+% formatSpec = '%d\n';
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,row);
 % fclose(fileID);
 % 
+% format_title = 'csr_%dx%dx%d_d.txt';
+% title = sprintf(format_title,m,n,l);
 % formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_x.txt','w');
-% fprintf(fileID,formatSpec,x);
-% fclose(fileID);
-% 
-% formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_d.txt','w');
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,d);
 % fclose(fileID);
 % 
