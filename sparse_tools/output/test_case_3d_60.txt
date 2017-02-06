@@ -1,0 +1,39 @@
+Test Run - 60x60x60 3D Temperature Matrix Solution
+Sparse Format Solution (A = (60x60x60)^2)
+
+Matrix Conversion
+Elapsed time is 208.653870 seconds.
+Matrix Conversion Done
+
+Biconjugate gradients stabilized method
+Elapsed time is 1.287509 seconds.
+Res: 9.861e-07
+Itr: 144
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 1.702555 seconds.
+Res: 9.861e-07
+Itr: 144
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 5.494798 seconds.
+Res: 9.631e-07
+Itr: [2 92]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 5.917748 seconds.
+Res: 9.631e-07
+Itr: [2 92]
+
+Biconjugate gradients stabilized (1) method
+Elapsed time is 2.976424 seconds.
+Res: 8.735e-07
+Itr: 7.025000e+01
+
+Biconjugate gradients stabilized (1) method with PC
+Elapsed time is 3.799989 seconds.
+Res: 8.735e-07
+Itr: 7.025000e+01
+
+MATLAB mldivide
+Elapsed time is 39.887923 seconds.

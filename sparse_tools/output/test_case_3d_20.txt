@@ -1,0 +1,39 @@
+Test Run - 20x20x20 2D Temperature Matrix Solution
+Sparse Format Solution (A = (20x20x20)^2)
+
+Matrix Conversion
+Elapsed time is 0.315924 seconds.
+Matrix Conversion Done
+
+Biconjugate gradients stabilized method
+Elapsed time is 0.051579 seconds.
+Res: 9.093e-07
+Itr: 4.550000e+01
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 0.032717 seconds.
+Res: 9.093e-07
+Itr: 4.550000e+01
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 0.173432 seconds.
+Res: 9.345e-07
+Itr: [1 70]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 0.152532 seconds.
+Res: 9.345e-07
+Itr: [1 70]
+
+Biconjugate gradients stabilized (1) method
+Elapsed time is 0.084527 seconds.
+Res: 8.512e-07
+Itr: 2.150000e+01
+
+Biconjugate gradients stabilized (1) method with PC
+Elapsed time is 0.054735 seconds.
+Res: 8.512e-07
+Itr: 2.150000e+01
+
+MATLAB mldivide
+Elapsed time is 0.093139 seconds.

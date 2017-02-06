@@ -1,0 +1,35 @@
+Test Run - 150x150 2D Temperature Matrix Solution
+Sparse Format Solution (A = (150x150)x(150x150)))
+
+Biconjugate gradients stabilized method
+Elapsed time is 0.200266 seconds.
+Res: 9.761e-07
+Itr: 3.285000e+02
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 0.278963 seconds.
+Res: 9.761e-07
+Itr: 3.285000e+02
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 4.150204 seconds.
+Res: 9.843e-07
+Itr: [10 28]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 4.261865 seconds.
+Res: 9.843e-07
+Itr: [10 28]
+
+Biconjugate gradients stabilized (1) method
+Elapsed time is 0.339256 seconds.
+Res: 8.923e-07
+Itr: 131
+
+Biconjugate gradients stabilized (1) method with PC
+Elapsed time is 0.387442 seconds.
+Res: 8.923e-07
+Itr: 131
+
+MATLAB mldivide
+Elapsed time is 0.086285 seconds.
