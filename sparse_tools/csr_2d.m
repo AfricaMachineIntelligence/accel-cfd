@@ -1,13 +1,13 @@
 % CSR Matrix Creator for 2D Heat Transfer Problems
-% Matt Blomquist - Jan 30, 2017
+% Matt Blomquist - Feb 5, 2017
 
 close all
 clear all
 clc
 
 % Set grid geo
-m = 20;
-n = 10; 
+m = 100;
+n = 100; 
 
 % Determine Number of Variables
 i_nodes = (m-2)*(n-2);
@@ -280,31 +280,42 @@ for i = 1:1:m
     
 end
 
+% Generate Solution Array
+
+d = zeros(1,m*n);
+
+for z = 1:1:m*n
+    d(z) = rand;
+end
+
 % % Write CSV to File
 % display('Writing to file')
 % 
+% format_title = 'csr_%dx%d_val.txt';
+% title = sprintf(format_title,m,n);
 % formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_val.txt','w');
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,val);
 % fclose(fileID);
 % 
-% formatSpec = '%8.0f\n';
-% fileID = fopen('csr_200_col.txt','w');
+% format_title = 'csr_%dx%d_col.txt';
+% title = sprintf(format_title,m,n);
+% formatSpec = '%d\n';
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,col);
 % fclose(fileID);
 % 
-% formatSpec = '%8.0f\n';
-% fileID = fopen('csr_200_row.txt','w');
+% format_title = 'csr_%dx%d_row.txt';
+% title = sprintf(format_title,m,n);
+% formatSpec = '%d\n';
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,row);
 % fclose(fileID);
 % 
+% format_title = 'csr_%dx%d_d.txt';
+% title = sprintf(format_title,m,n);
 % formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_x.txt','w');
-% fprintf(fileID,formatSpec,x);
-% fclose(fileID);
-% 
-% formatSpec = '%4.8f\n';
-% fileID = fopen('csr_200_d.txt','w');
+% fileID = fopen(title,'w');
 % fprintf(fileID,formatSpec,d);
 % fclose(fileID);
 % 
