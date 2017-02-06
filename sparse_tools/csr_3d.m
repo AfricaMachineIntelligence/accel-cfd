@@ -1,5 +1,5 @@
 % CSR Matrix Creator for 3D Heat Transfer Problems
-% Matt Blomquist - Jan 30, 2017
+% Matt Blomquist - Feb 5, 2017
 
 close all
 clear all
