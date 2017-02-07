@@ -1,0 +1,68 @@
+Matrix Conversion
+Elapsed time is 0.091994 seconds.
+Matrix Conversion Done
+
+TDMA
+Elapsed time is 6.00 seconds.
+Res: < 1e-3
+Itr: 2400
+
+Biconjugate gradients
+Elapsed time is 1.612104 seconds.
+Res: 6.111e-07
+Itr: 194
+
+Biconjugate gradients with PC
+Elapsed time is 1.157690 seconds.
+Res: 8.875e-07
+Itr: 53
+
+Biconjugate gradients stabilized method
+Elapsed time is 0.526363 seconds.
+Res: 8.067e-07
+Itr: 114
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 0.498471 seconds.
+Res: 5.714e-07
+Itr: 3.550000e+01
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 2.805453 seconds.
+Res: 9.250e-07
+Itr: [2 64]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 0.708475 seconds.
+Res: 8.925e-07
+Itr: [1 48]
+
+Biconjugate gradients
+Elapsed time is 0.437535 seconds.
+Res: 9.298e-04
+Itr: 106
+
+Biconjugate gradients with PC
+Elapsed time is 0.643087 seconds.
+Res: 3.552e-04
+Itr: 30
+
+Biconjugate gradients stabilized method
+Elapsed time is 0.250580 seconds.
+Res: 9.497e-04
+Itr: 5.250000e+01
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 0.235989 seconds.
+Res: 6.474e-04
+Itr: 1.750000e+01
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 1.163881 seconds.
+Res: 9.692e-04
+Itr: [1 80]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 0.286851 seconds.
+Res: 7.504e-04
+Itr: [1 24]
