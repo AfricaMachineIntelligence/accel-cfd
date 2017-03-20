@@ -3,7 +3,7 @@
 ## 2D Cases w/o Preconditioning
 														
 | N | Total Aij | Memory Required (MB) | TDMA | Pardiso (FORTRAN) | BiCGStab (MATLAB) | GMRES (MATLAB) | BiCGStab (1) (MATLAB) | MLDIVIDE (MATLAB) |	
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | 10 | 460 | 3.68E-03 | 0.045 | N/A | 0.016 | 0.058 | 0.058 | 0.001 | 
 | 20 | 1,920 | 1.54E-02 | 0.437 | N/A | 0.016 | 0.025 | 0.019 | 0.003 | 
 | 30 | 4,380 | 3.50E-02 | 1.830 | N/A | 0.038 | 0.068 | 0.044 | 0.017 | 
