@@ -62,8 +62,8 @@
     ja = 0
     ia = 0
     
-    ! This function causes the problem.
-    !call mkl_ddnscsr(job,m,n,A,m,Acsr,ja,ia,info)
+!   This function converts dense matrix to CSR format.
+    call mkl_ddnscsr(job,m,n,A,m,Acsr,ja,ia,info)
     
     print *, 'Acsr:', Acsr
     
