@@ -1108,9 +1108,21 @@ end do
 
 end subroutine make_sparse_matrix
 
-! This subroutine solves the sparse linear system.
-subroutine la_solve()
+! This subroutine solves the sparse linear system using the PARDISO routine.
+subroutine solvePardiso()
 
-end subroutine la_solve
+end subroutine solvePardiso
+
+subroutine solveBicg()
+
+end subroutine solveBicg
+
+subroutine solveBicgstab()
+
+end subroutine solveBicgstab
+
+subroutine solveGmres()
+
+end subroutine solveGmres
 
 end module cfdSolve
