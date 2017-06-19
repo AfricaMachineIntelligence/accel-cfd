@@ -1,23 +1,28 @@
-# linear_algebra_solvers
-A collection of code examples for solving linear algebraic systems. 
+# Performance Optimization in Computational Fluid Dynamics with Parallelism for Linear System Solvers
 
+## Overview
 
-# CUDA
-
-This subdirectory contains solvers written in cuda c++ to solver linear systems utilizing nvidia gpus. 
-
-# Pardiso
-
-This subdirectory contains solvers written in FORTRAN and use Intel MKL libraries to solve systems in parallel on a single computer or in a cluster.
-
-# Sparse Tools
-
-This subdirectory contains tools to generate sparse matricies.
-
-# TDMA 
-
-This subdirectory contains standard, line-by-line TDMA solvers.
-
-# Examples
-
-This subdirectory contains example problems to solver and compare performance of each solver.
+## Checklist (TODO)
+- Linear Solvers
+  - TDMA
+  - BiCG
+  - GMRES
+  - BiCGStab
+  - Pardiso
+- Preconditioners
+  - Jacobi
+  - SSOR
+  - ILU
+  - Multigrid
+- Tools (Vector / Restructuring)
+  - Index Calculation
+  - Variable Number
+  - Sparse Matrix Creation
+- Convection Integration / Testing
+  - Integration with Existing Code
+  - Testing with Existing Code
+- Batch Scripts
+  - Diffusion Tests
+  - Convection Tests
+  
+## Directory Map
