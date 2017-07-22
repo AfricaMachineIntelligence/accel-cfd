@@ -1,0 +1,39 @@
+Test Run - 50x50x50 3D Temperature Matrix Solution
+Sparse Format Solution (A = (50x50x50)^2)
+
+Matrix Conversion
+Elapsed time is 67.896666 seconds.
+Matrix Conversion Done
+
+Biconjugate gradients stabilized method
+Elapsed time is 0.464005 seconds.
+Res: 6.726e-07
+Itr: 1.215000e+02
+
+Biconjugate gradients stabilized method with PC
+Elapsed time is 0.633829 seconds.
+Res: 6.726e-07
+Itr: 1.215000e+02
+
+Generalized minimum residual method (with restarts)
+Elapsed time is 2.234818 seconds.
+Res: 8.966e-07
+Itr: [2 64]
+
+Generalized minimum residual method (with restarts) with PC
+Elapsed time is 2.355599 seconds.
+Res: 8.966e-07
+Itr: [2 64]
+
+Biconjugate gradients stabilized (1) method
+Elapsed time is 0.964779 seconds.
+Res: 6.316e-07
+Itr: 5.950000e+01
+
+Biconjugate gradients stabilized (1) method with PC
+Elapsed time is 1.118875 seconds.
+Res: 6.316e-07
+Itr: 5.950000e+01
+
+MATLAB mldivide
+Elapsed time is 11.106700 seconds.
