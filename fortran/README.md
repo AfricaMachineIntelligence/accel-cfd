@@ -1,3 +1,0 @@
-# Fortran Version of Code
-
-Placeholder...
