@@ -5,11 +5,19 @@
 
 ## Objective
 
-The scope of this study is to provide a framework for improving the computational performance of legacy CFD code, perform an optimization study of the current solutions to CFD problems, and determine the costs associated with implementing new technologies in legacy CFD code. The framework for improving the computational performance of legacy CFD code considers two classes of examples. The  first class of examples, considers simple diffusion problems solved using the finite volume method and the centralized differencing scheme. This class of example is primarily used due to its simplicity as implementing parallelism on a simple problem provide a higher adherence of understanding when compared to a problem with increased complexity. The second class of examples focused on a two-phase flow boiling problem that incorporates a solution to the full, incompressible Navier-Stokes equations. This example is used to demonstrate the effectiveness of implementing parallelism in a complex, CFD problem.
-
-The optimization study considers the rate of convergence for the solutions to sparse linear systems, the computational resource requirement for different solutions to sparse linear systems, and the duration of computation for given solutions on a variety of hardware platforms. The study also considers different means of implementation for each solution algorithm and how that implementation affects the performance metrics of the optimization study. The optimization study considers the same two classes of CFD problems as mentioned previously and considers cases for a 1-dimensional, 2-dimensional, and 3-dimensional environment.
-
-Finally, the determination of cost associated with implementing each particular CFD solution is examined for both the simple diffusion problem and the two-phase boiling problem. The performance indications of cost are considered for the 1-dimensional, 2-dimensional, and 3-dimensional environments and assess the required revision and restructuring of legacy code necessary to implement new solution types.
+The objective of this study [thesis] is to optimize the performance of a numerical solution algorithm for micro-channel flow boiling problems (code used in previous work). The performance indices for this study are (1) solution accuracy, (2) computational duration [runtime], and (3) stability of solution algorithm [does the algorithm find convergence]. The study involves the following steps:
+- Identify the bottlenecks in the existing microchannel flow boiling solution algorithm that significantly impact computational runtime.
+  - Identify bottlenecks in literature.
+  - Identify bottlenecks in actual code.
+- Identify potential improvements to significant bottlenecks from literature review.
+- Perform a comparative / parametric study of potential improvements (linear solvers) on a simplified problem (3D diffusion).
+  - Perform a comparative analysis of the different improvement methods.
+  - Test difference linear system solution methods on a 3D diffusion problem (parametric study).
+- Determine the cost of implementation of each potential improvement method.
+  - How big of a change is it to implement new methods in CFD?
+- Implement (? #) of potential improvements in the microchannel flow boiling solution algorithm.
+- Perform an analysis of the impact made by improving bottleneck areas.
+- Identify additional areas related to this study that can be investigated in future research.
 
 ### Framework
 
