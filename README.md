@@ -7,19 +7,12 @@ individual forces and constraints from the Navier-Stokes equations. The trained 
 
 ## Objective
 
-The objective of this study [thesis] is to optimize the performance of a numerical solution algorithm for micro-channel flow boiling problems (code used in previous work). The performance indices for this study are (1) solution accuracy, (2) computational duration [runtime], and (3) stability of solution algorithm [does the algorithm find convergence]. The study involves the following steps:
-- Identify the bottlenecks in the existing microchannel flow boiling solution algorithm that significantly impact computational runtime.
-  - Identify bottlenecks in literature.
-  - Identify bottlenecks in actual code.
-- Identify potential improvements to significant bottlenecks from literature review.
-- Perform a comparative / parametric study of potential improvements (linear solvers) on a simplified problem (3D diffusion).
-  - Perform a comparative analysis of the different improvement methods.
-  - Test difference linear system solution methods on a 3D diffusion problem (parametric study).
-- Determine the cost of implementation of each potential improvement method.
-  - How big of a change is it to implement new methods in CFD?
-- Implement (? #) of potential improvements in the microchannel flow boiling solution algorithm.
-- Perform an analysis of the impact made by improving bottleneck areas.
-- Identify additional areas related to this study that can be investigated in future research.
+Typical computational fluid dynamics simulations require a significant amount of computational resources to run in a reasonable amount of time. As the complexity of these simulations increase, however, it is common for the computational duration of a solution to take days or weeks. While computational hardware increases in ability at an exponential rate, researchers in academia and industry often find the bottleneck in the design process to be running multiple CFD simulations. 
+One potential improvement to reduce the computational duration of a CFD simulation is to utilize a highly parallel solution algorithm on parallel computation hardware, like a graphics processing unit (GPU). A number of recent studies have shown this to be a highly-successful method for reducing the computational duration of serial CFD codes by factors of up to 10 times. For a serial simulation that takes approximately 140 hours, a parallel simulation could achieve results of 14 hours. While this is a significant improvement, 14 hours is still a long time to wait.
+The biggest contributor to the long duration for CFD simulations is the time spent in the iterative solution process. A number of hybrid solution algorithms have been developed in recent years to improve the performance of convergence of these solvers, but a close approximate precondition method (the initial guess) is by far the most significant aspect of time spent in iterations. 
+A sub-field of Artificial Intelligence called Machine Learning may offer a potential for significantly improving the computational duration of CFD simulations. A technique in Machine Learning, called Deep Learning, utilizes multi-layer convolutional neural networks to classify objects based on image inputs. This technique of using CNNs can be applied to CFD simulations as well. Instead of classifying the CFD simulation, a regression model can be used to estimate the parameters of pressure, velocity, and temperature given boundary conditions, initial conditions, and geometry. By developing and training a CNN model to generate the initial guess for the SIMPLER algorithm, a parallel enabled CFD simulation can outperform a serial CFD simulation by over 30 times. Therefore, the 140 hour simulation can be reduced to less than 5 hours.
+I propose to develop a CFD simulation algorithm that solves the microchannel flow boiling problem presented in my previous work. This algorithm will be written to utilize highly-parallel, computational architectures (GPUs) and will incorporate a trained feed forward neural network to precondition the SIMPLER solution algorithm. The performance of this algorithm will them be directly compared with the performance of the previous, serial implementation used during previous work. 
+
 
 ## Directory Map
 
