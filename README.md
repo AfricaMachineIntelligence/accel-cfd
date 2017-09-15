@@ -1,7 +1,9 @@
 # Performance Optimization of Numerical Solution Algorithm for Microchannel Flow Boiling
 
-## Overview
+## Abstract
 
+In recent years, there have been significant advancements to computational hardware that allow for massive parallelism in computational fluid dynamics algorithms. However, as academia and industry increase the complexity of these algorithms computational runtimes can extend to days and weeks with state of the art approaches. In this study, convolutional neural networks are used as a novel approach to preconditioning computational fluid dynamics simulations in order to significantly reduce the number of iterations required for convergence. A parallel enabled, computational fluid dynamics simulation is created to match state of the art performance for a microchannel, two-phase, convection problem. A convolutional neural network is then trained on simulation data from the simulation using a regression approximation to estimate the effects of
+individual forces and constraints from the Navier-Stokes equations. The trained network is then implemented as a feed-forward network to create an initial guess for the pressure, velocity, and temperature fields used in the SIMPLER algorithm. This hybrid algorithm is then compared with state of the art serial and parallel implantations of the microchannel, two-phase, convection simulation.
 
 ## Objective
 
@@ -19,27 +21,6 @@ The objective of this study [thesis] is to optimize the performance of a numeric
 - Perform an analysis of the impact made by improving bottleneck areas.
 - Identify additional areas related to this study that can be investigated in future research.
 
-## Checklist (TODO)
-- Linear Solvers
-  - TDMA
-  - BiCG
-  - GMRES
-  - BiCGStab
-  - Pardiso
-- Preconditioners
-  - Jacobi
-  - SSOR
-  - ILU
-  - Multigrid
-- Tools (Vector / Restructuring)
-  - Index Calculation
-  - Variable Number
-  - Sparse Matrix Creation
-- Convection Integration / Testing
-  - Integration with Existing Code
-  - Testing with Existing Code
-- Batch Scripts
-  - Diffusion Tests
-  - Convection Tests
-  
 ## Directory Map
+
+TBC.
