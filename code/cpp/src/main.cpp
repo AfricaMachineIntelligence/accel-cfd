@@ -1,5 +1,0 @@
-// Placeholder
-
-int main() {
-
-}

@@ -1,3 +1,0 @@
-# C++ Version of Code
-
-Placeholder...
